@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | PlantLK</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="/images/favicon-white.png" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body>
+
+    <aside class="sidebar">
+      <div class="sb-brand">
+        <h1>
+          <i class="bi bi-leaf-fill" style="color: var(--g3)"></i> Plant<span
+            >LK</span
+          >
+        </h1>
+        <p>Admin Panel</p>
+      </div>
+      <nav class="sb-nav">
+        <div class="nav-lbl">Overview</div>
+        <a class="ni active" data-page="overview" onclick="go('overview')">
+          <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <div class="nav-lbl">Catalogue</div>
+        <a class="ni" data-page="products" onclick="go('products')">
+          <i class="bi bi-box-seam-fill"></i> Products
+          <span class="bdg" id="bdg-products">0</span>
+        </a>
+        <a class="ni" data-page="categories" onclick="go('categories')">
+          <i class="bi bi-tags-fill"></i> Categories
+          <span class="bdg" id="bdg-categories">0</span>
+        </a>
+        <a class="ni" data-page="nurseries" onclick="go('nurseries')">
+          <i class="bi bi-geo-alt-fill"></i> Nurseries
+          <span class="bdg" id="bdg-nurseries">0</span>
+        </a>
+        <div class="nav-lbl">Sales</div>
+        <a class="ni" data-page="orders" onclick="go('orders')">
+          <i class="bi bi-bag-check-fill"></i> Orders
+          <span class="bdg" id="bdg-orders">0</span>
+        </a>
+        <a class="ni" data-page="messages" onclick="go('messages')">
+          <i class="bi bi-envelope-fill"></i> Messages
+          <span class="bdg" id="bdg-messages">0</span>
+        </a>
+        <div class="nav-lbl">People</div>
+        <a class="ni" data-page="users" onclick="go('users')">
+          <i class="bi bi-people-fill"></i> Users
+          <span class="bdg" id="bdg-users">0</span>
+        </a>
+      </nav>
+      <div class="sb-foot">
+        <div class="ap">
+          <div class="av" id="adm-av">A</div>
+          <div class="ai">
+            <strong id="adm-email">Admin</strong>
+            <span>Administrator</span>
+          </div>
+          <button class="lo" onclick="doLogout()" title="Logout">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+
+    <main class="main">
+      <div class="topbar">
+        <div class="tb-left">
+          <div class="tb-title" id="tb-title">
+            Dashboard <span id="tb-sub">Overview</span>
+          </div>
+        </div>
+        <div class="tb-acts">
+          <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+            <i class="bi bi-moon-fill"></i> <span id="theme-label">Dark</span>
+          </button>
+          <button class="btn btn-o btn-sm" onclick="refresh()">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+          </button>
+          <button
+            class="btn btn-p btn-sm"
+            id="tb-add"
+            onclick="openAdd()"
+            style="display: none"
+          >
+            <i class="bi bi-plus-lg"></i> Add New
+          </button>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div class="page active" id="page-overview">
+        <div class="sg">
+          <div class="sc cp" onclick="go('products')">
+            <div class="sc-ico"><i class="bi bi-box-seam-fill"></i></div>
+            <div class="sc-val" id="s-pr">—</div>
+            <div class="sc-lbl">Products</div>
+          </div>
+          <div class="sc cg" onclick="go('categories')">
+            <div class="sc-ico"><i class="bi bi-tags-fill"></i></div>
+            <div class="sc-val" id="s-c">—</div>
+            <div class="sc-lbl">Categories</div>
+          </div>
+          <div class="sc cg" onclick="go('nurseries')">
+            <div class="sc-ico"><i class="bi bi-geo-alt-fill"></i></div>
+            <div class="sc-val" id="s-n">—</div>
+            <div class="sc-lbl">Nurseries</div>
+          </div>
+          <div class="sc ca" onclick="go('orders')">
+            <div class="sc-ico"><i class="bi bi-bag-check-fill"></i></div>
+            <div class="sc-val" id="s-o">—</div>
+            <div class="sc-lbl">Orders</div>
+          </div>
+          <div class="sc cb" onclick="go('users')">
+            <div class="sc-ico"><i class="bi bi-people-fill"></i></div>
+            <div class="sc-val" id="s-u">—</div>
+            <div class="sc-lbl">Users</div>
+          </div>
+        </div>
+        <div class="g2g">
+          <div class="card">
+            <div class="ch">
+              <div class="ct">Recent Orders</div>
+              <button class="btn btn-o btn-sm" onclick="go('orders')">
+                View all
+              </button>
+            </div>
+            <div class="rl" id="rec-orders">
+              <div class="te">
+                <i class="bi bi-hourglass-split"></i> Loading...
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch">
+              <div class="ct">Recent Messages</div>
+              <button class="btn btn-o btn-sm" onclick="go('messages')">
+                View all
+              </button>
+            </div>
+            <div class="rl" id="rec-messages">
+              <div class="te">
+                <i class="bi bi-hourglass-split"></i> Loading...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="page" id="page-products">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">Products</div>
+            <div
+              style="
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <input
+                class="si"
+                id="q-products"
+                placeholder="Search products..."
+                oninput="ft('products', this.value)"
+              />
+              <button class="btn btn-p btn-sm" onclick="openAdd()">
+                <i class="bi bi-plus-lg"></i> Add Product
+              </button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price (LKR)</th>
+                <th>Stock</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tb-products">
+              <tr class="lr">
+                <td colspan="7">
+                  <div class="dl"><span></span><span></span><span></span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CATEGORIES -->
+      <div class="page" id="page-categories">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">Categories</div>
+            <div
+              style="
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <input
+                class="si"
+                id="q-categories"
+                placeholder="Search categories..."
+                oninput="ft('categories', this.value)"
+              />
+              <button class="btn btn-p btn-sm" onclick="openAdd()">
+                <i class="bi bi-plus-lg"></i> Add Category
+              </button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category ID</th>
+                <th>Slug</th>
+                <th>Sort</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tb-categories">
+              <tr class="lr">
+                <td colspan="6">
+                  <div class="dl"><span></span><span></span><span></span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- NURSERIES -->
+      <div class="page" id="page-nurseries">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">Nurseries</div>
+            <div
+              style="
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <input
+                class="si"
+                id="q-nurseries"
+                placeholder="Search nurseries..."
+                oninput="ft('nurseries', this.value)"
+              />
+              <button class="btn btn-p btn-sm" onclick="openAdd()">
+                <i class="bi bi-plus-lg"></i> Add Nursery
+              </button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Hours</th>
+                <th>Coordinates</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tb-nurseries">
+              <tr class="lr">
+                <td colspan="6">
+                  <div class="dl"><span></span><span></span><span></span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="page" id="page-orders">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">Orders</div>
+            <input
+              class="si"
+              id="q-orders"
+              placeholder="Search orders..."
+              oninput="ft('orders', this.value)"
+            />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tb-orders">
+              <tr class="lr">
+                <td colspan="7">
+                  <div class="dl"><span></span><span></span><span></span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="page" id="page-messages">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">Contact Messages</div>
+            <input
+              class="si"
+              id="q-messages"
+              placeholder="Search messages..."
+              oninput="ft('messages', this.value)"
+            />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>From</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tb-messages">
+              <tr class="lr">
+                <td colspan="6">
+                  <div class="dl"><span></span><span></span><span></span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="page" id="page-users">
+        <div class="card">
+          <div class="ch">
+            <div class="ct">Users</div>
+            <input
+              class="si"
+              id="q-users"
+              placeholder="Search users..."
+              oninput="ft('users', this.value)"
+            />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Joined</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tb-users">
+              <tr class="lr">
+                <td colspan="6">
+                  <div class="dl"><span></span><span></span><span></span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+
+    <div class="mo" id="m-product">
+      <div class="md" style="max-width: 620px">
+        <div class="md-hd">
+          <div class="md-t" id="m-product-title">Add Product</div>
+          <button class="md-close" onclick="cm('m-product')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="md-s">
+          Fields match exactly what your Android app reads from Firestore
+        </div>
+        <input type="hidden" id="pr-id" />
+
+      
+        <div class="img-preview-wrap">
+          <img
+            id="pr-preview"
+            src="https://via.placeholder.com/90x90/d8f3dc/2d6a4f?text=IMG"
+            alt="Preview"
+          />
+          <label
+            style="
+              font-size: 11px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.7px;
+              color: var(--tu);
+              display: block;
+              margin-bottom: 5px;
+            "
+            >Product Image</label
+          >
+          <input type="file" id="pr-file" multiple class="form-control" />
+        </div>
+
+        <div class="fr">
+          <div class="fg full">
+            <label>Product Title *</label
+            ><input id="pr-title" placeholder="e.g. Monstera Deliciosa" />
+          </div>
+          <div class="fg full">
+            <label>Product ID * (unique, e.g. pid20)</label
+            ><input id="pr-pid" placeholder="e.g. pid001" />
+          </div>
+          <div class="fg">
+            <label>Category ID</label>
+            <select id="pr-cat-sel">
+              <option value="">-- Select Category --</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Price (LKR) *</label
+            ><input
+              id="pr-price"
+              type="number"
+              step="0.01"
+              placeholder="2000"
+            />
+          </div>
+          <div class="fg">
+            <label>Stock Count</label
+            ><input id="pr-stock" type="number" placeholder="10" />
+          </div>
+          <div class="fg">
+            <label>Rating (0–5)</label
+            ><input
+              id="pr-rating"
+              type="number"
+              step="0.1"
+              min="0"
+              max="5"
+              placeholder="4.5"
+            />
+          </div>
+          <div class="fg full">
+            <label>Description</label
+            ><textarea
+              id="pr-desc"
+              placeholder="Product description..."
+            ></textarea>
+          </div>
+        </div>
+
+
+        <div class="attrs-section">
+          <h4>
+            <i class="bi bi-sliders"></i> Attributes
+            <span
+              style="font-weight: 400; text-transform: none; letter-spacing: 0"
+              >(optional — only for products with size/color options)</span
+            >
+          </h4>
+          <div id="attrs-list"></div>
+          <button
+            class="btn btn-o btn-sm"
+            onclick="addAttr()"
+            style="margin-top: 4px"
+          >
+            <i class="bi bi-plus"></i> Add Attribute
+          </button>
+        </div>
+
+        <div class="mf">
+          <button class="btn btn-o" onclick="cm('m-product')">Cancel</button>
+          <button class="btn btn-p" id="btn-sv-product" onclick="saveProduct()">
+            <i class="bi bi-check-lg"></i> Save Product
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mo" id="m-category">
+      <div class="md" style="max-width: 460px">
+        <div class="md-hd">
+          <div class="md-t" id="m-cat-title">Add Category</div>
+          <button class="md-close" onclick="cm('m-category')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="md-s">
+          Category image uploads to Firebase Storage automatically
+        </div>
+        <input type="hidden" id="c-id" />
+        <div class="img-preview-wrap">
+          <img
+            id="c-preview"
+            src="https://via.placeholder.com/90x90/d8f3dc/2d6a4f?text=IMG"
+            alt="Preview"
+          />
+          <label
+            style="
+              font-size: 11px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.7px;
+              color: var(--tu);
+              display: block;
+              margin-bottom: 5px;
+            "
+            >Category Image</label
+          >
+          <input type="file" id="c-file" accept="image/*" />
+        </div>
+        <div class="fg">
+          <label>Category Name *</label
+          ><input id="c-name" placeholder="e.g. Indoor Plants" />
+        </div>
+        <div class="fg">
+          <label>Category ID * (matches app, e.g. cat1)</label
+          ><input id="c-cid" placeholder="e.g. cat1" />
+        </div>
+        <div class="fg">
+          <label>Slug (auto-filled)</label
+          ><input id="c-slug" placeholder="indoor-plants" />
+        </div>
+        <div class="fg">
+          <label>Description</label
+          ><textarea
+            id="c-desc"
+            style="min-height: 60px"
+            placeholder="Short description..."
+          ></textarea>
+        </div>
+        <div class="fg">
+          <label>Sort Order</label
+          ><input id="c-order" type="number" placeholder="0" />
+        </div>
+        <div class="mf">
+          <button class="btn btn-o" onclick="cm('m-category')">Cancel</button>
+          <button class="btn btn-p" id="btn-sv-cat" onclick="saveCat()">
+            <i class="bi bi-check-lg"></i> Save Category
+          </button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="mo" id="m-nursery">
+      <div class="md">
+        <div class="md-hd">
+          <div class="md-t" id="m-nursery-title">Add Nursery</div>
+          <button class="md-close" onclick="cm('m-nursery')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="md-s">Fill in the nursery location details</div>
+        <input type="hidden" id="n-id" />
+        <div class="fr">
+          <div class="fg full">
+            <label>Name *</label
+            ><input id="n-name" placeholder="e.g. Green Haven" />
+          </div>
+          <div class="fg full">
+            <label>Address *</label
+            ><input id="n-addr" placeholder="No. 12, Temple Road, Colombo 05" />
+          </div>
+          <div class="fg">
+            <label>Phone</label
+            ><input id="n-phone" placeholder="+94 77 123 4567" />
+          </div>
+          <div class="fg">
+            <label>Hours</label
+            ><input id="n-hours" placeholder="Open · Closes 7:00 PM" />
+          </div>
+          <div class="fg">
+            <label>Latitude *</label
+            ><input id="n-lat" type="number" step="any" placeholder="6.9147" />
+          </div>
+          <div class="fg">
+            <label>Longitude *</label
+            ><input id="n-lng" type="number" step="any" placeholder="79.8511" />
+          </div>
+        </div>
+        <div class="mf">
+          <button class="btn btn-o" onclick="cm('m-nursery')">Cancel</button>
+          <button class="btn btn-p" id="btn-sv-nursery" onclick="saveNursery()">
+            <i class="bi bi-check-lg"></i> Save Nursery
+          </button>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="mo" id="m-order">
+      <div class="md" style="max-width: 420px">
+        <div class="md-hd">
+          <div class="md-t">Update Order Status</div>
+          <button class="md-close" onclick="cm('m-order')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="md-s">This status is shown to the user in the app</div>
+        <input type="hidden" id="o-id" />
+        <div class="fg">
+          <label>Order ID</label><input id="o-display-id" disabled />
+        </div>
+        <div class="fg">
+          <label>Customer User ID</label><input id="o-uid" disabled />
+        </div>
+        <div class="fg">
+          <label>Order Total</label><input id="o-total" disabled />
+        </div>
+        <div class="fg">
+          <label>New Status *</label>
+          <select id="o-status">
+            <option value="PENDING">PENDING</option>
+            <option value="CONFIRMED">CONFIRMED</option>
+            <option value="PROCESSING">PROCESSING</option>
+            <option value="SHIPPED">SHIPPED</option>
+            <option value="DELIVERED">DELIVERED</option>
+            <option value="CANCELLED">CANCELLED</option>
+          </select>
+        </div>
+        <div class="mf">
+          <button class="btn btn-o" onclick="cm('m-order')">Cancel</button>
+          <button class="btn btn-p" id="btn-sv-order" onclick="saveOrder()">
+            <i class="bi bi-check-lg"></i> Update Status
+          </button>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="mo" id="m-user">
+      <div class="md" style="max-width: 460px">
+        <div class="md-hd">
+          <div class="md-t">Edit User</div>
+          <button class="md-close" onclick="cm('m-user')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="md-s">You can also upload a profile photo for the user</div>
+        <input type="hidden" id="u-id" />
+
+     
+        <div class="img-preview-wrap">
+          <img
+            id="u-preview"
+            src="https://via.placeholder.com/90x90/d8f3dc/2d6a4f?text=U"
+            alt="Profile"
+            style="border-radius: 50%"
+          />
+          <label
+            style="
+              font-size: 11px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.7px;
+              color: var(--tu);
+              display: block;
+              margin-bottom: 5px;
+            "
+            >Profile Photo</label
+          >
+          <input type="file" id="u-file" accept="image/*" />
+        </div>
+
+        <div class="fg">
+          <label>Display Name</label
+          ><input id="u-name" placeholder="Full Name" />
+        </div>
+        <div class="fg">
+          <label>Email (read-only)</label><input id="u-email" disabled />
+        </div>
+        <div class="fg">
+          <label>Role</label>
+          <select id="u-role">
+            <option value="user">User</option>
+            <option value="moderator">Moderator</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Status</label>
+          <select id="u-status">
+            <option value="active">Active</option>
+            <option value="suspended">Suspended</option>
+          </select>
+        </div>
+        <div class="mf">
+          <button class="btn btn-o" onclick="cm('m-user')">Cancel</button>
+          <button class="btn btn-p" id="btn-sv-user" onclick="saveUser()">
+            <i class="bi bi-check-lg"></i> Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="mo" id="m-message">
+      <div class="md" style="max-width: 520px">
+        <div class="md-hd">
+          <div class="md-t">Message Details</div>
+          <button class="md-close" onclick="cm('m-message')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="fr" style="margin-bottom: 12px">
+          <div class="fg">
+            <label>From</label><input id="msg-name" disabled />
+          </div>
+          <div class="fg">
+            <label>Email</label><input id="msg-email" disabled />
+          </div>
+          <div class="fg full">
+            <label>Subject</label><input id="msg-subject" disabled />
+          </div>
+          <div class="fg full">
+            <label>Date</label><input id="msg-date" disabled />
+          </div>
+        </div>
+        <div class="fg full">
+          <label>Message</label>
+          <div class="msg-body" id="msg-body"></div>
+        </div>
+        <div class="mf">
+          <button class="btn btn-o" onclick="cm('m-message')">Close</button>
+          <button
+            class="btn btn-blue"
+            id="btn-reply-email"
+            onclick="replyEmail()"
+          >
+            <i class="bi bi-reply-fill"></i> Reply via Email
+          </button>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="mo" id="m-delete">
+      <div class="md" style="max-width: 360px; text-align: center">
+        <button class="md-close" onclick="cm('m-delete')" style="float: right">
+          <i class="bi bi-x-lg"></i>
+        </button>
+        <i
+          class="bi bi-trash3-fill"
+          style="
+            font-size: 42px;
+            color: var(--red);
+            display: block;
+            margin: 10px 0 16px;
+          "
+        ></i>
+        <div class="md-t">Delete this item?</div>
+        <p
+          class="md-s"
+          id="del-msg"
+          style="text-align: center; margin-top: 6px"
+        >
+          This cannot be undone.
+        </p>
+        <div class="mf" style="justify-content: center">
+          <button class="btn btn-o" onclick="cm('m-delete')">Cancel</button>
+          <button class="btn btn-d" id="btn-del">
+            <i class="bi bi-trash3"></i> Yes, Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tc" id="tc"></div>
+    <script type="module" src="js/dashboard.js"></script>
+  </body>
+</html>

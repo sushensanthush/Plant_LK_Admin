@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | PlantLK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="icon" type="image/x-icon" href="/images/favicon-white.png" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0f1f17;
+      font-family: "DM Sans", sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+   
+    body::before {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+          rgba(82, 183, 136, 0.12) 0%,
+          transparent 70%);
+      top: -100px;
+      left: -100px;
+      animation: blob1 12s ease-in-out infinite;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+          rgba(45, 106, 79, 0.15) 0%,
+          transparent 70%);
+      bottom: -80px;
+      right: -80px;
+      animation: blob2 15s ease-in-out infinite;
+    }
+
+    @keyframes blob1 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(60px, 40px) scale(1.1);
+      }
+    }
+
+    @keyframes blob2 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      50% {
+        transform: translate(-40px, -60px) scale(1.15);
+      }
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .brand-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #2d6a4f, #52b788);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 8px 24px rgba(82, 183, 136, 0.35);
+    }
+
+    .brand-icon i {
+      font-size: 28px;
+      color: #fff;
+    }
+
+    .brand h1 {
+      font-family: "Syne", sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .brand h1 span {
+      color: #52b788;
+    }
+
+    .brand p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 7px;
+    }
+
+    .field .inp-wrap {
+      position: relative;
+    }
+
+    .field .inp-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.3);
+      pointer-events: none;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px 14px 13px 42px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 11px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      color: #fff;
+      outline: none;
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+    }
+
+    .field input::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .field input:focus {
+      border-color: #52b788;
+      box-shadow: 0 0 0 4px rgba(82, 183, 136, 0.15);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #2d6a4f, #52b788);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      font-family: "Syne", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition:
+        opacity 0.2s,
+        transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-login:hover {
+      opacity: 0.92;
+    }
+
+    .btn-login:active {
+      transform: scale(0.98);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .btn-login.loading .btn-text {
+      display: none;
+    }
+
+    .btn-login.loading .spinner {
+      display: block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .err {
+      background: rgba(230, 57, 70, 0.15);
+      border: 1px solid rgba(230, 57, 70, 0.3);
+      color: #ff8080;
+      padding: 11px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+      margin-top: 14px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .err.show {
+      display: flex;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="brand">
+      <img src="/images/plant_app_logo.png" alt="Plant.LK Logo"
+        style="width: 80px; height: 80px; object-fit: contain" />
+      <h1>Plant<span>LK</span></h1>
+      <p>Admin Dashboard</p>
+    </div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <div class="inp-wrap">
+        <i class="bi bi-envelope"></i>
+        <input type="email" id="inp-email" placeholder="admin@plantlk.com" autocomplete="email" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <div class="inp-wrap">
+        <i class="bi bi-lock"></i>
+        <input type="password" id="inp-password" placeholder="Enter your password" autocomplete="current-password" />
+      </div>
+    </div>
+
+    <button class="btn-login" id="btn-login" onclick="handleLogin()">
+      <span class="btn-text"><i class="bi bi-box-arrow-in-right"></i> Sign In</span>
+      <div class="spinner"></div>
+    </button>
+
+    <div class="err" id="error-msg">
+      <i class="bi bi-exclamation-circle"></i>
+      <span id="err-text"></span>
+    </div>
+
+    <div class="footer">Secured by Firebase Authentication</div>
+  </div>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+
+</html>
